@@ -23,5 +23,3 @@ n_node->right = NULL;
 
 return (n_node);
 }
-
-
