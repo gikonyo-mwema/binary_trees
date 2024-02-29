@@ -60,7 +60,7 @@ if (tree->left && tree->right)
 {
 l = binary_tree_is_full(tree->left);
 r = binary_tree_is_full(tree->right);
-return (l * r);
+return (l *r);
 }
 return (0);
 
