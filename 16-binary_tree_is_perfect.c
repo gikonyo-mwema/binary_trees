@@ -1,29 +1,96 @@
 #include "binary_trees.h"
 
 /**
-* binary_tree_is_perfect - checks if a binary tree is perfect
-* @tree: pointer to the root node of the tree to check
+* binary_tree_depth - measure depth of a node in a binary tree.
+* @tree: A pointe to the node to measure depth.
 *
-* Return: 1 if the tree is perfect, otherwise 0. If tree is NULL, return 0.
+* Return: depth else NULL
+*/
+size_t binary_tree_depth(const binary_tree_t *tree)
+{
+size_t count = 0;
+
+if (!tree || !tree->parent)
+return (count);
+
+count = 1 + binary_tree_depth(tree->parent);
+
+return (count);
+}
+
+/**
+* binary_tree_nodes - Counts the nodes with at least one child
+* @tree: A pointer to the root node of the tree to count the number of nodes.
+*
+* Return: If tree is NULL, the function must return 0, else return node count.
+*/
+size_t binary_tree_nodes(const binary_tree_t *tree)
+{
+size_t count = 0;
+
+if (!tree || (!tree->left && !tree->right))
+return (0);
+
+count += 1;
+count += binary_tree_nodes(tree->left);
+count += binary_tree_nodes(tree->right);
+
+return (count);
+
+}
+
+/**
+* binary_tree_is_full - Checks if a binary tree is full.
+* @tree: A pointer to the root node of the tree to check.
+*
+* Return: If tree is NULL or is not full - 0.
+*         Otherwise - 1.
+*/
+int binary_tree_is_full(const binary_tree_t *tree)
+{
+int l, r;
+
+if (!tree)
+return (0);
+
+if (!tree->left && !tree->right)
+return (1);
+
+if (tree->left && tree->right)
+{
+l = binary_tree_is_full(tree->left);
+r = binary_tree_is_full(tree->right);
+return (l * r);
+}
+return (0);
+
+}
+
+/**
+* binary_tree_is_perfect - Checks if a binary tree is perfect.
+* @tree: A pointer to the root node of the tree to check.
+*
+* Return: If tree is NULL or not perfect, 0.
+*         Otherwise, 1.
 */
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-int depth_left = 0;
-int depth_right = 0;
+int l, r;
 
-if (tree == NULL)
+if (!tree)
 return (0);
 
-depth_left = binary_tree_height(tree->left);
-depth_right = binary_tree_height(tree->right);
+if (binary_tree_is_full(tree) == 0)
+return (0);
 
-if (depth_left == depth_right)
+if (binary_tree_depth(tree->left) == binary_tree_depth(tree->right))
 {
-if (tree->left == NULL && tree->right == NULL)
+l = binary_tree_nodes(tree->left);
+r = binary_tree_nodes(tree->right);
+if (l == r)
 return (1);
-if (tree->left != NULL && tree->right != NULL)
-return (binary_tree_is_perfect(tree->left) && binary_tree_is_perfect(tree->right));
 }
 
 return (0);
+
 }
